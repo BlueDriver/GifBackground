@@ -1,0 +1,47 @@
+<idea-plugin>
+    <id>com.github.backgroundGif</id>
+    <name>Gif Background</name>
+    <version>1.0</version>
+    <vendor email="cpwu@foxmail.com" url="https://github.com/BlueDriver">BlueDriver</vendor>
+
+    <description><![CDATA[
+      Set Gif Image Background For IntelliJ IDEA<br>
+    ]]></description>
+
+    <change-notes><![CDATA[
+      <em>2019-12-06 V1.0</em>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="173.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <project-components>
+        <component>
+            <implementation-class>gif.background.component.GifBackgroundComponent</implementation-class>
+        </component>
+    </project-components>
+
+    <actions>
+        <!-- Add your actions here -->
+        <group id="gifBackground" text="GIF Background" popup="true" icon="/icon/G.png">
+            <add-to-group group-id="ViewMenu" anchor="after" relative-to-action="ToggleFullScreenGroup"/>
+            <action id="SetGIF" class="gif.background.action.GifAction" text="Set GIF">
+            </action>
+            <separator/>
+            <action id="ClearGIF" class="gif.background.action.GifAction" text="Clear GIF">
+            </action>
+        </group>
+    </actions>
+
+</idea-plugin>
