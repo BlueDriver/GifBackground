@@ -25,7 +25,7 @@ import java.util.List;
  * @date 2019/12/6 16:33 星期五
  */
 public class GifUtils {
-    private static final String DEFAULT_TARGET_FOLDER = "D:\\backgroundGif\\";
+    private static final String DEFAULT_TARGET_FOLDER = "D:\\gifBackground\\";
     private static final String GIF_PATH = "GIF_PATH";
 
     @Nullable
