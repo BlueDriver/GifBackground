@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @date 2019/12/6 16:41 星期五
  */
 public class DialogUtils {
-    public static final String DEFAULT_TITLE = "BackgroundGif";
+    public static final String DEFAULT_TITLE = "Gif Background";
 
     public static void showInfo(@NotNull String message) {
         ApplicationManager.getApplication().invokeLater(() -> Messages.showInfoMessage(message, DEFAULT_TITLE));

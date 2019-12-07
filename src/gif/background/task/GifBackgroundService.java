@@ -5,6 +5,7 @@ import gif.background.bo.FrameInfo;
 import gif.background.utils.BackgroundUtils;
 import gif.background.utils.DialogUtils;
 import gif.background.utils.GifUtils;
+import gif.background.utils.PropertiesUtils;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -46,8 +47,9 @@ public class GifBackgroundService {
             }
             executorService.scheduleAtFixedRate(task, delay, delay, TimeUnit.MILLISECONDS);
 
-            GifUtils.saveGifPath(gifPath);
+            PropertiesUtils.saveValue(PropertiesUtils.GIF_PATH, gifPath);
         } catch (Exception e) {
+            log.warn(e);
             stop();
             DialogUtils.showError(e.getMessage());
         }

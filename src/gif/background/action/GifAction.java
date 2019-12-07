@@ -1,13 +1,13 @@
 package gif.background.action;
 
-import gif.background.task.GifBackgroundService;
-import gif.background.utils.BackgroundUtils;
-import gif.background.utils.DialogUtils;
-import gif.background.utils.GifUtils;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
+import gif.background.task.GifBackgroundService;
+import gif.background.utils.BackgroundUtils;
+import gif.background.utils.DialogUtils;
+import gif.background.utils.PropertiesUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -25,15 +25,19 @@ public class GifAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         final String menuText = e.getPresentation().getText();
+
         if (SET_GIF.equals(menuText)) {
 
-            String gifPath = GifUtils.getGifPath();
+            String gifPath = PropertiesUtils.getValue(PropertiesUtils.GIF_PATH);
 
-            gifPath = Messages.showInputDialog("Input GIF file path", DialogUtils.DEFAULT_TITLE,
+            gifPath = Messages.showInputDialog("Input GIF File Path", DialogUtils.DEFAULT_TITLE,
                     Messages.getInformationIcon(), gifPath, new InputValidator() {
                         @Override
                         public boolean checkInput(String s) {
-                            return s.trim().length() > 0;
+                            if (s.trim().length() <= 0) {
+                                return false;
+                            }
+                            return s.endsWith(".gif") || s.endsWith(".GIF");
                         }
 
                         @Override
@@ -45,9 +49,13 @@ public class GifAction extends AnAction {
                 return;
             }
             GifBackgroundService.restart(gifPath.trim());
+
+            PropertiesUtils.saveValue(PropertiesUtils.GIF_ENABLE, "TRUE");
+
         } else if (CLEAR_GIF.equals(menuText)) {
             GifBackgroundService.stop();
             BackgroundUtils.clearBackground();
+            PropertiesUtils.removeKey(PropertiesUtils.GIF_ENABLE);
         }
     }
 }

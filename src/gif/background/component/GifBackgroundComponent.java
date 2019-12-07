@@ -2,7 +2,7 @@ package gif.background.component;
 
 import com.intellij.openapi.components.ProjectComponent;
 import gif.background.task.GifBackgroundService;
-import gif.background.utils.GifUtils;
+import gif.background.utils.PropertiesUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -17,7 +17,12 @@ public class GifBackgroundComponent implements ProjectComponent {
 
     @Override
     public void projectOpened() {
-        String gifPath = GifUtils.getGifPath();
+        String value = PropertiesUtils.getValue(PropertiesUtils.GIF_ENABLE);
+        if (StringUtils.isEmpty(value)) {
+            return;
+        }
+
+        String gifPath = PropertiesUtils.getValue(PropertiesUtils.GIF_PATH);
         if (StringUtils.isEmpty(gifPath)) {
             return;
         }

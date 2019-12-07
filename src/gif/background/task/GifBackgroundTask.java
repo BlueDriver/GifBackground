@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class GifBackgroundTask implements Runnable {
     private int index;
-    private List<FrameInfo> frameInfoList;
+    private final List<FrameInfo> frameInfoList;
 
     public GifBackgroundTask(List<FrameInfo> frameInfoList) {
         this.index = 0;

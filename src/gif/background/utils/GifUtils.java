@@ -1,8 +1,8 @@
 package gif.background.utils;
 
-import gif.background.bo.FrameInfo;
-import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.ui.UIUtil;
+import gif.background.bo.FrameInfo;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,30 +25,47 @@ import java.util.List;
  * @date 2019/12/6 16:33 星期五
  */
 public class GifUtils {
-    private static final String DEFAULT_TARGET_FOLDER = "D:\\gifBackground\\";
-    private static final String GIF_PATH = "GIF_PATH";
+    private static final Logger log = Logger.getInstance(GifUtils.class);
+
+    private static final String DEFAULT_TARGET_FOLDER = "D:\\.GifBackground\\";
 
     @Nullable
     public static List<FrameInfo> getFrameList(String gifPath) {
         if (StringUtils.isEmpty(gifPath)) {
-            gifPath = getGifPath();
+            gifPath = PropertiesUtils.getValue(PropertiesUtils.GIF_PATH);
         }
         if (StringUtils.isEmpty(gifPath)) {
             return null;
         }
-        return convertGif(gifPath, DEFAULT_TARGET_FOLDER, 1F);
+        return convertGif(gifPath, 1F);
     }
 
     /**
      * convert gif image into png images
      */
     @Nullable
-    public static List<FrameInfo> convertGif(@NotNull String gifPath, String targetFolder, float opacity) {
+    public static List<FrameInfo> convertGif(@NotNull String gifPath, float opacity) {
         //region check if gif file exists
         FileInputStream inputStream;
+        String targetFolder;
         try {
+            File gifFile = new File(gifPath);
+            if (!gifFile.exists()) {
+                throw new Exception("Gif File Not Found: " + gifPath);
+            }
+            if (gifFile.isDirectory()) {
+                DialogUtils.showError(gifPath + "\nThis is a directory path!");
+                return null;
+            }
+            targetFolder = gifFile.getParentFile().getAbsolutePath();
+            if (StringUtils.isEmpty(targetFolder)) {
+                targetFolder = DEFAULT_TARGET_FOLDER;
+            } else {
+                targetFolder += "\\.GifBackground\\";
+            }
             inputStream = new FileInputStream(gifPath);
         } catch (Exception e) {
+            log.warn(e);
             DialogUtils.showError(e.getMessage());
             return null;
         }
@@ -58,8 +75,10 @@ public class GifUtils {
         File folder = new File(targetFolder);
         if (folder.exists()) {
             File[] files = folder.listFiles();
-            for (File file : files) {
-                file.delete();
+            if (files != null) {
+                for (File file : files) {
+                    file.delete();
+                }
             }
         }
         folder.mkdirs();
@@ -79,7 +98,7 @@ public class GifUtils {
                 img = gif.getFrame(i);
                 delay = gif.getDelay(i);
                 img = setOpacity(img, opacity);
-                targetFilePath = targetFolder + System.currentTimeMillis() + "-" + i + ".png";
+                targetFilePath = targetFolder + System.currentTimeMillis() + "-" + i;
                 ImageIO.write(img, "png", new File(targetFilePath));
 
                 info = new FrameInfo();
@@ -91,6 +110,12 @@ public class GifUtils {
         } catch (IOException e) {
             DialogUtils.showError(e.getMessage());
             return null;
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e1) {
+                log.warn(e1);
+            }
         }
 
         return list;
@@ -103,17 +128,6 @@ public class GifUtils {
         g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
         g.dispose();
         return img;
-    }
-
-
-    public static String getGifPath() {
-        PropertiesComponent prop = PropertiesComponent.getInstance();
-        return prop.getValue(GIF_PATH);
-    }
-
-    public static void saveGifPath(@NotNull String path) {
-        PropertiesComponent prop = PropertiesComponent.getInstance();
-        prop.setValue(GIF_PATH, path);
     }
 
     private GifUtils() {

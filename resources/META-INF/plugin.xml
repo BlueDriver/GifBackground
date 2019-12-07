@@ -1,8 +1,8 @@
 <idea-plugin>
-    <id>com.github.backgroundGif</id>
+    <id>com.github.GifBackground</id>
     <name>Gif Background</name>
     <version>1.0</version>
-    <vendor email="cpwu@foxmail.com" url="https://github.com/BlueDriver">BlueDriver</vendor>
+    <vendor email="cpwu@foxmail.com" url="https://github.com/BlueDriver/GifBackground">BlueDriver</vendor>
 
     <description><![CDATA[
       Set Gif Image Background For IntelliJ IDEA<br>

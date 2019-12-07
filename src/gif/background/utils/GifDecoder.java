@@ -1,5 +1,7 @@
 package gif.background.utils;
 
+import com.intellij.util.ui.UIUtil;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -275,7 +277,7 @@ public final class GifDecoder {
                 pixels = deinterlace(pixels, fr); // Rearrange pixel lines
             }
             // Create image of type 2=ARGB for frame area
-            final BufferedImage frame = new BufferedImage(fr.w, fr.h, 2);
+            final BufferedImage frame = UIUtil.createImage(fr.w, fr.h, 2);
             arraycopy(pixels, 0, ((DataBufferInt) frame.getRaster().getDataBuffer()).getData(), 0, fr.wh);
             // Draw frame area on top of working image
             g.drawImage(frame, fr.x, fr.y, null);
@@ -295,7 +297,7 @@ public final class GifDecoder {
             arraycopy(((DataBufferInt) img.getRaster().getDataBuffer()).getData(), 0, prevPx, 0, wh);
 
             // Create another copy for the end user to not expose internal state
-            fr.img = new BufferedImage(w, h, 2); // 2 = ARGB
+            fr.img = UIUtil.createImage(w, h, 2); // 2 = ARGB
             arraycopy(prevPx, 0, ((DataBufferInt) fr.img.getRaster().getDataBuffer()).getData(), 0, wh);
 
             // Handle disposal of current frame
@@ -314,8 +316,6 @@ public final class GifDecoder {
          * that table. If not, the color will be from the global color table.
          * Returns 0 if there is neither a local nor a global color table.
          *
-         * @param index
-         *            Index of the current frame, 0 to N-1
          * @return 32 bit ARGB color in the form 0xAARRGGBB
          */
         public final int getBackgroundColor() {
@@ -354,7 +354,7 @@ public final class GifDecoder {
          */
         public final BufferedImage getFrame(final int index) {
             if (img == null) { // Init
-                img = new BufferedImage(w, h, 2); // 2 = ARGB
+                img = UIUtil.createImage(w, h, 2); // 2 = ARGB
                 g = img.createGraphics();
                 g.setBackground(new Color(0, true)); // Transparent color
             }
@@ -490,7 +490,6 @@ public final class GifDecoder {
     }
 
     /**
-     * @param ext
      *            Empty application extension object
      * @param in
      *            Raw data
@@ -537,7 +536,6 @@ public final class GifDecoder {
     }
 
     /**
-     * @param ext
      *            Graphic control extension object
      * @param in
      *            Raw data
