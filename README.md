@@ -8,7 +8,23 @@
 
 ### How to install?
 
-1. Download the file [gifBackground.jar](<https://github.com/BlueDriver/BackgroundGif/tree/master/download>)
+> There are 2 ways to install the plugin, the first one is recommended
+
+####  1.Install from JetBrains plugin repository
+
+1. Open Settings panel
+
+   ![1575901054214](assets/1575901054214.png)
+
+2. Search **Gif Background**
+
+![1575901316474](assets/1575901316474.png)
+
+3. Click the Install button and then restart your IDE
+
+#### 2.Install from disk
+
+1. Download the [Plugin File](https://plugins.jetbrains.com/plugin/13465-gif-background/)
 
 2. Open your IDEA Settings panel
 
@@ -19,6 +35,7 @@
    ![1575644673645](assets/1575644673645.png)
 
 4. Then click the OK and restart your IDEA
+
 
 ### How to use?
 
